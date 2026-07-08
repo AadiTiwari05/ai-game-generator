@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Game Generator</title>
+</head>
+<body>
+    <h1>AI Game Generator</h1>
+    <textarea id="promptInput" placeholder="Dedscribe the game you want"></textarea>
+    <br>
+    <button id ="generateButton">Generate Game</button>
+    <h2>Generate Game</h2>
+    <iframe id="gamePreview" style="width: 100%; height: 600px"></iframe>
+
+    <script>
+        const promptInput = document.getElementById("promptInput");
+        const generateButton = document.getElementById("generateButton");
+        const gamePreview = document.getElementById("gamePreview");
+
+        generateButton.addEventListener("click", async () => {
+            const prompt = promptInput.value;
+            const response = await fetch("/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    prompt: prompt
+                })
+            });
+
+            const data = await response.json();
+            gamePreview.srcdoc = data.game_html;
+        });
+    </script>
+</body>
+</html>

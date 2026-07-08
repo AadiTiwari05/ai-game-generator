@@ -1,15 +1,21 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from app.models.prompt import PromptRequest, GenerateResponse
 
 from app.services.game_generator import generate_game_from_prompt
 
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.get("/")
 def home():
     return {"message" : "Welcome to AI Game Generator"}
 
+@app.get("/app")
+def frontend():
+    return FileResponse("app/static/index.html")
 
 @app.get("/hello/{name}")
 def hello(name : str):
