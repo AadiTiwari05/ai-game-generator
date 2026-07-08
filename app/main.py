@@ -1,5 +1,4 @@
-from fastapi import FastAPI
-
+from fastapi import FastAPI, HTTPException
 from app.models.prompt import PromptRequest, GenerateResponse
 
 from app.services.game_generator import generate_game_from_prompt
@@ -29,9 +28,17 @@ def creator():
 
 @app.post("/generate", response_model= GenerateResponse)
 def generate_game(request: PromptRequest):
-    generated_game = generate_game_from_prompt(request.prompt)
-    return {
-        "game_html" : generated_game,
-        "prompt": request.prompt,
-        "status" : "completed"
-    }
+    try:
+        generated_game = generate_game_from_prompt(request.prompt)
+
+        return {
+            "game_html" : generated_game,
+            "prompt": request.prompt,
+            "status" : "completed"
+        }
+
+    except Exception as error:
+        raise HTTPException(
+            status_code = 500,
+            detail = f"Game generation failed: {str(error)}"
+        ) 
