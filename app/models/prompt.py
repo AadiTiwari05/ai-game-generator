@@ -7,6 +7,6 @@ class PromptRequest(BaseModel):
 
 
 class GenerateResponse(BaseModel):
-    message : str
+    generated_prompt : str
     prompt : str
     status : Literal["pending", "completed", "failed"]

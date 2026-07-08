@@ -31,7 +31,7 @@ def creator():
 def generate_game(request: PromptRequest):
     generated_game = generate_game_from_prompt(request.prompt)
     return {
-        "message" : generated_game,
+        "generated_prompt" : generated_game,
         "prompt": request.prompt,
         "status" : "completed"
     }
