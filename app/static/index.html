@@ -8,7 +8,7 @@
     <textarea id="promptInput" placeholder="Dedscribe the game you want"></textarea>
     <br>
     <button id ="generateButton">Generate Game</button>
-
+    <button id="downloadButton">Download Game</button>
     <p id="statusText"></p>
 
     <h2>Generate Game</h2>
@@ -19,6 +19,8 @@
         const generateButton = document.getElementById("generateButton");
         const gamePreview = document.getElementById("gamePreview");
         const statusText = document.getElementById("statusText");
+        const downloadButton = document.getElementById("downloadButton");
+        let latestGameHtml = "";
 
         generateButton.addEventListener("click", async () => {
             const prompt = promptInput.value;
@@ -43,6 +45,8 @@
                 }
 
                 gamePreview.srcdoc = data.game_html;
+                latestGameHtml = data.game_html;
+                downloadButton.disabled = false; 
                 statusText.textContent = "Game generated successfully.";
             }
             catch (error) {
@@ -52,6 +56,25 @@
                 generateButton.disabled = false;
             }
         });
+
+        downloadButton.addEventListener("click", () => {
+            if(!latestGameHtml) {
+                return;
+            }
+            const file = new Blob([latestGameHtml], {
+                type: "text/html"
+            });
+
+            const url = URL.createObjectURL(file);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "generated-game.html";
+            link.click();
+
+            URL.revokeObjectURL(url);
+        });
+    
     </script>
 </body>
 </html>
