@@ -9,11 +9,8 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-@app.get("/")
-def home():
-    return {"message" : "Welcome to AI Game Generator"}
 
-@app.get("/app")
+@app.get("/")
 def frontend():
     return FileResponse("app/static/index.html")
 
