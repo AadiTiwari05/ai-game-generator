@@ -6,6 +6,7 @@ class PromptRequest(BaseModel):
     prompt: str = Field(min_length= 3, max_length=500)
 
 
+
 class GenerateResponse(BaseModel):
     game_html : str
     prompt : str
